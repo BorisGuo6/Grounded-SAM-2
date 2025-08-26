@@ -132,26 +132,6 @@ def build_sam2_video_predictor(
     return model
 
 
-<<<<<<< Updated upstream
-def _hf_download(model_id):
-    from huggingface_hub import hf_hub_download
-
-    config_name, checkpoint_name = HF_MODEL_ID_TO_FILENAMES[model_id]
-    ckpt_path = hf_hub_download(repo_id=model_id, filename=checkpoint_name)
-    return config_name, ckpt_path
-
-
-def build_sam2_hf(model_id, **kwargs):
-    config_name, ckpt_path = _hf_download(model_id)
-    return build_sam2(config_file=config_name, ckpt_path=ckpt_path, **kwargs)
-
-
-def build_sam2_video_predictor_hf(model_id, **kwargs):
-    config_name, ckpt_path = _hf_download(model_id)
-    return build_sam2_video_predictor(
-        config_file=config_name, ckpt_path=ckpt_path, **kwargs
-    )
-=======
 def build_sam2_camera_predictor(
     config_file,
     ckpt_path=None,
@@ -176,7 +156,6 @@ def build_sam2_camera_predictor(
             "++model.fill_hole_area=8",
         ]
     hydra_overrides.extend(hydra_overrides_extra)
->>>>>>> Stashed changes
 
     # Read config and init model
     cfg = compose(config_name=config_file, overrides=hydra_overrides)
