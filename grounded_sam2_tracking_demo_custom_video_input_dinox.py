@@ -20,12 +20,14 @@ from utils.video_utils import create_video_from_images
 """
 Hyperparam for Ground and Tracking
 """
-VIDEO_PATH = "./assets/hippopotamus.mp4"
-TEXT_PROMPT = "hippopotamus."
-OUTPUT_VIDEO_PATH = "./hippopotamus_tracking_demo.mp4"
+# VIDEO_PATH = "./assets/hippopotamus.mp4"
+# VIDEO_PATH = "./assets/P01_04_5s.mp4"
+VIDEO_PATH = "./assets/P01_04_plastic.mp4"
+TEXT_PROMPT = "plastic bag"
+OUTPUT_VIDEO_PATH = "./P01_04_plastic_tracking_demo.mp4"
 SOURCE_VIDEO_FRAME_DIR = "./custom_video_frames"
 SAVE_TRACKING_RESULTS_DIR = "./tracking_results"
-API_TOKEN_FOR_DINOX = "Your API token"
+API_TOKEN_FOR_DINOX = "e62ec024924d04bd4df78b90b6a5fc72"
 PROMPT_TYPE_FOR_VIDEO = "box" # choose from ["point", "box", "mask"]
 BOX_THRESHOLD = 0.2
 IOU_THRESHOLD = 0.8  # 添加IOU阈值参数
