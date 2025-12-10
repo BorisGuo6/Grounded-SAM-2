@@ -15,6 +15,8 @@ from pathlib import Path
 from PIL import Image
 from sam2.build_sam import build_sam2
 from sam2.sam2_image_predictor import SAM2ImagePredictor
+import base64
+import mimetypes
 
 """
 Hyper parameters
@@ -54,6 +56,14 @@ classes = [x.strip().lower() for x in TEXT_PROMPT.split('.') if x]
 class_name_to_id = {name: id for id, name in enumerate(classes)}
 class_id_to_name = {id: name for name, id in class_name_to_id.items()}
 
+def _to_data_url(path: str) -> str:
+    mime, _ = mimetypes.guess_type(path)
+    if mime is None:
+        mime = "application/octet-stream"
+    with open(path, "rb") as f:
+        b64 = base64.b64encode(f.read()).decode("ascii")
+    return f"data:{mime};base64,{b64}"
+
 if WITH_SLICE_INFERENCE:
     def callback(image_slice: np.ndarray) -> sv.Detections:
         print("Inference on image slice")
@@ -61,7 +71,7 @@ if WITH_SLICE_INFERENCE:
         with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as tmpfile:
             temp_filename = tmpfile.name
         cv2.imwrite(temp_filename, image_slice)
-        image_url = client.upload_file(temp_filename)
+        image_url = _to_data_url(temp_filename)
         task = V2Task(
             api_path="/v2/task/grounding_dino/detection",
             api_body={
@@ -109,7 +119,7 @@ if WITH_SLICE_INFERENCE:
     class_ids = detections.class_id
     input_boxes = detections.xyxy
 else:
-    image_url = client.upload_file(IMG_PATH)
+    image_url = _to_data_url(IMG_PATH)
 
     task = V2Task(
         api_path="/v2/task/grounding_dino/detection",
